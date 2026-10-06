@@ -13,22 +13,22 @@ class CarDivideTests(unittest.TestCase):
             "spots": [{"pos": pos} for pos in spots],
         })
 
-    def test_even_and_odd_car_counts(self):
+    def test_single_supply_car_for_every_nonempty_fleet(self):
         for count in range(8):
             with self.subTest(count=count):
                 kinds = divide_car_kinds(count)
-                self.assertEqual(kinds.count(0), (count + 1) // 2)
-                self.assertEqual(kinds.count(1), count // 2)
+                self.assertEqual(kinds.count(0), max(0, count - 1))
+                self.assertEqual(kinds.count(1), min(1, count))
 
     def test_nearest_agents_selected_without_reordering_ids(self):
         self.assertEqual(divide_initial_agents(
-            self.data([9, 1, 8, 2], [0]))['kinds'], [1, 0, 1, 0])
+            self.data([9, 1, 8, 2], [0]))['kinds'], [1, 0, 0, 0])
         self.assertEqual(divide_initial_agents(
-            self.data([9, 1, 8, 2, 3], [0]))['kinds'], [1, 0, 1, 0, 0])
+            self.data([9, 1, 8, 2, 3], [0]))['kinds'], [1, 0, 0, 0, 0])
 
     def test_nearest_of_all_spots_and_ties_use_agent_id(self):
         self.assertEqual(divide_initial_agents(
-            self.data([4, 8, 1, 5], [0, 9]))['kinds'], [1, 0, 0, 1])
+            self.data([4, 8, 1, 5], [0, 9]))['kinds'], [0, 0, 0, 1])
 
     def test_odd_row_hex_distance(self):
         # pos 4 is diagonally adjacent to pos 1, just like pos 0.

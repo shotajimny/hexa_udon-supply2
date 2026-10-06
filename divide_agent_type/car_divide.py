@@ -21,7 +21,7 @@ def count_agents(data):
 def divide_car_kinds(car_count): 
     # 0 or 1 に分ける
     # 0: 巡回車, 1: 補給車
-    kind0_count = (car_count + 1) // 2 # 奇数なら巡回車を1台多くする
+    kind0_count = max(0, car_count - 1) # 補給車1台、残りは巡回車
     kind1_count = car_count - kind0_count # 残りのエージェントをkind1にする
 
     return [0] * kind0_count + [1] * kind1_count
@@ -30,7 +30,7 @@ def divide_car_kinds(car_count):
 def divide_initial_agents(data):
     agents = get_agents(data)
     car_count = len(agents)
-    tourcar_count = (car_count + 1) // 2
+    tourcar_count = max(0, car_count - 1)
     if not data.spots:
         # スポットがない場合は元のID順で割り当てる。
         return {"kinds": divide_car_kinds(car_count)}
