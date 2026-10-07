@@ -4,7 +4,7 @@ import requests
 def get_setting():
     # APIから初期設定データを取得する関数を定義する
     url = "http://127.0.0.1:8080/setting"
-    response = requests.get(url, params={"token": "token-p0"})
+    response = requests.get(url, params={"token": "token-p3"})
 
     if response.status_code == 200:
         return response.json()
@@ -15,7 +15,7 @@ def get_setting():
 def get_day_data():
     url = "http://127.0.0.1:8080/"
     # APIから日毎のデータを取得する関数を定義する
-    response = requests.get(url, params={"token": "token-p0"})
+    response = requests.get(url, params={"token": "token-p3"})
 
     if response.status_code == 200:
         print("get_day_data response:", response.json())  # デバッグ用の出力
@@ -31,7 +31,7 @@ def post_agent_types(data):
 
     requests.post(
         url,
-        params={"token": "token-p0"},
+        params={"token": "token-p3"},
         json=data
     )
 
@@ -41,6 +41,6 @@ def post_agent_moves(data):
 
     return requests.post(
         url,
-        params={"token": "token-p0"},
+        params={"token": "token-p3"},
         json=data
     )
