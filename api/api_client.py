@@ -1,9 +1,10 @@
 # APIにアクセスするためのクライアントを定義するモジュール
 import requests
+URL = "http://127.0.0.1:8080/"
 
 def get_setting():
     # APIから初期設定データを取得する関数を定義する
-    url = "http://127.0.0.1:8080/setting"
+    url = URL + "setting"
     response = requests.get(url, params={"token": "token-p3"})
 
     if response.status_code == 200:
@@ -13,7 +14,7 @@ def get_setting():
 
 
 def get_day_data():
-    url = "http://127.0.0.1:8080/"
+    url = URL
     # APIから日毎のデータを取得する関数を定義する
     response = requests.get(url, params={"token": "token-p3"})
 
@@ -27,7 +28,7 @@ def get_day_data():
 
 def post_agent_types(data):
     # APIにエージェントタイプを送信する関数を定義する
-    url = "http://127.0.0.1:8080/agent"
+    url = URL + "agent"
 
     requests.post(
         url,
@@ -37,7 +38,7 @@ def post_agent_types(data):
 
 def post_agent_moves(data):
     # APIにエージェントの移動データを送信する関数を定義する
-    url = "http://127.0.0.1:8080/"
+    url = URL
 
     return requests.post(
         url,
