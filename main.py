@@ -1,3 +1,4 @@
+from match_result import MatchResultReporter
 import time
 from gui.result_stats import replay_acquisitions
 from typing import List
@@ -161,6 +162,7 @@ tourcar_calculator = calculate_tourcar(setting.pre_game)
 supplycar_calculator = calculate_supplycar(setting.pre_game)
 
 match_events = []
+match_reporter = MatchResultReporter(setting.set_data, match_events)
 
 # 4.試合終了まで日数分ループする
 for day in range(len(setting.pre_game.daySteps)):
@@ -168,6 +170,7 @@ for day in range(len(setting.pre_game.daySteps)):
     day_data = DayData()
     day_data.set_pre_date()
     match_events.append(dict(day_data.set_data, type='day'))
+    match_reporter.update()
     confirmed = replay_acquisitions(setting.set_data, {'events': match_events})
     if confirmed:
         tourcar_calculator.acquired_brands_match = set(confirmed['brands'])
@@ -258,6 +261,7 @@ for day in range(len(setting.pre_game.daySteps)):
     if response.status_code == 200:
         match_events.append({'type': 'post', 'endpoint': '/', 'day': day,
                              'payload': moves, 'body': response.text})
+    match_reporter.update()
 
 
     # エージェントごとのパスをjson形式で出力し、APIにPOSTする
@@ -265,9 +269,4 @@ for day in range(len(setting.pre_game.daySteps)):
     # 当日の回答受付終了時間まで待機
     while time.time() < day_data.pre_date.endsAt:
         time.sleep(0.1)
-final_stats = replay_acquisitions(setting.set_data, {'events': match_events, 'completed': True})
-if final_stats and final_stats['complete']:
-    missing = final_stats['missing_brands']
-    print('全種類制覇:', not missing, '未取得ブランド:', missing)
-else:
-    print('全種類制覇: 判定できません（未集計の日があります）')
+match_reporter.update(completed=True)

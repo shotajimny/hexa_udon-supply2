@@ -6,3 +6,6 @@
 __pycache__/
 /servers/
 /maps/
+
+# 通常実行時の試合履歴
+results/
